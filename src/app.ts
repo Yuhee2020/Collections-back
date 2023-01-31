@@ -16,6 +16,7 @@ app.use(cors())
 app.use(cookieParser())
 app.use(router)
 
+
 mongoose.set('strictQuery', false)
 
 const start=async ()=>{
