@@ -20,7 +20,7 @@ mongoose.set('strictQuery', false)
 
 const start=async ()=>{
     try {
-        await mongoose.connect(`mongodb+srv://yuhee:2oo791@cluster0.tqujgv7.mongodb.net/?retryWrites=true&w=majority`)
+        await mongoose.connect(`${DB_URI}`)
         app.listen(PORT,()=>console.log(`Server started on PORT = ${PORT}`))
     }catch (e){
         console.log(e)
