@@ -4,7 +4,7 @@ import {Request, Response,} from "express"
 export const getUsers = async (req: Request, res: Response) => {
     try {
         const users = await User.find()
-        res.json(users)
+        res.status(200).json(users)
     } catch (e) {
         console.log(e)
         res.status(400).json({message: "Users error"})

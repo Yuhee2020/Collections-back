@@ -1,22 +1,21 @@
-import jwt from "jsonwebtoken";
 import {NextFunction, Request, Response} from "express";
+import jwt from "jsonwebtoken";
+import {accessSecret} from "../service/token-service";
 
-const secret = `${process.env.SECRET_KEY}`
 
-export const authMiddleware = (req:Request, res:Response, next:NextFunction) => {
-
-    if(req.method === 'OPTIONS') {
-        return next()
-    }
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
-        const token = req.headers.authorization?.split(' ')[1]
+        const token = req.headers.authorization
+            ? req.headers.authorization.split(' ')[1]
+            : '';
         if (!token) {
-            return res.status(401).json({message: 'No token'})
+            return res.status(401).json({error: "Unauthorized"});
         }
-        req.body.user = jwt.verify(token, secret)
+        req.body.tokenData = jwt.verify(token, accessSecret);
         next()
     } catch (e) {
-        return res.status(401).json({message: 'Auth token error'})
+        console.log(e)
+        return res.status(401).json({error: "Unauthorized"})
     }
 }

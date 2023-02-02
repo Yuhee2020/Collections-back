@@ -2,10 +2,11 @@ import express from "express"
 import mongoose from "mongoose"
 import cors from "cors"
 import cookieParser from "cookie-parser";
-import router from "./routes";
+import dotenv from "dotenv"
+import {authRouter} from "./routes/authRouter";
+import {usersRouter} from "./routes/usersRouter";
 
-
-require('dotenv').config()
+dotenv.config()
 
 
 const PORT=process.env.PORT
@@ -14,7 +15,8 @@ const app= express()
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
-app.use(router)
+app.use("/auth", authRouter)
+app.use("/users", usersRouter)
 
 
 mongoose.set('strictQuery', false)

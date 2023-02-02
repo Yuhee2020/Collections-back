@@ -1,9 +1,16 @@
-import { Document } from "mongoose"
-
-export interface User extends Document {
-    email: string
-    password: string
-    isBlocked: boolean
-    registrationDate: string
+export type UserType = {
+    email: string;
+    password: string;
+    userName: string;
+    avatar: string;
+    role: string;
+    isBlocked: boolean;
+    registrationDate: string;
     lastLoginDate: string
+    accessToken: string;
+    refreshToken: string;
+    reviewsCount:number;
+    likes: number;
+    _id?:string
 }
+
