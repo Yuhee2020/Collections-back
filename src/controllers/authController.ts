@@ -4,7 +4,7 @@ import {validationResult} from "express-validator";
 import bcrypt from 'bcrypt'
 import dayjs from "dayjs";
 import {generateAccessToken, generateRefreshToken, refreshSecret} from "../service/token-service";
-import {REFRESH_TOKEN_AGE} from "../constants";
+import {REFRESH_TOKEN_AGE_MS} from "../constants";
 import jwt from "jsonwebtoken";
 
 
@@ -65,7 +65,7 @@ export const login = async (req: Request, res: Response) => {
             refreshToken,
         },{new:true})
 
-       res.cookie("refreshToken", refreshToken, {maxAge:REFRESH_TOKEN_AGE, httpOnly:true})
+       res.cookie("refreshToken", refreshToken, {maxAge:REFRESH_TOKEN_AGE_MS, httpOnly:true})
         return res.status(200).json({loggedUser})
     } catch (e) {
         console.log(e)
@@ -99,12 +99,11 @@ export const refresh = async (req: Request, res: Response) => {
         const newAccessToken =generateAccessToken(user._id)
         const newRefreshToken =generateRefreshToken(user._id)
         const loggedUser= await User.findByIdAndUpdate(user._id, {
-            lastLoginDate: dayjs().format("DD-MMM-YYYY HH:mm:ss"),
             accessToken:newAccessToken,
             refreshToken:newRefreshToken,
         },{new:true})
 
-        res.cookie("refreshToken", newRefreshToken, {maxAge:REFRESH_TOKEN_AGE, httpOnly:true})
+        res.cookie("refreshToken", newRefreshToken, {maxAge:REFRESH_TOKEN_AGE_MS, httpOnly:true})
         return res.status(200).json({loggedUser})
 
     } catch (e) {

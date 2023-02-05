@@ -13,7 +13,7 @@ authRouter.post('/registration',[
 authRouter.post('/login',login)
 authRouter.post('/refresh',refresh)
 authRouter.post('/logout',logOut)
-authRouter.get('/auth',authMiddleware)
+// authRouter.get('/auth',authMiddleware)
 authRouter.get('/users',authMiddleware, getUsers)
 authRouter.put('/delete', deleteUser)
 authRouter.put('/block', blockUser)

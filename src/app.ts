@@ -11,10 +11,14 @@ dotenv.config()
 
 const PORT=process.env.PORT
 const DB_URI=process.env.DB_URL
+const CLIENT_URL=process.env.CLIENT_URL || "http://localhost:3000"
 
 const app= express()
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    credentials:true,
+    origin: CLIENT_URL,
+}))
 app.use(cookieParser())
 app.use("/auth", authRouter)
 app.use("/users", usersRouter)
