@@ -65,7 +65,7 @@ export const login = async (req: Request, res: Response) => {
             refreshToken,
         },{new:true})
 
-       res.cookie("refreshToken", refreshToken, {maxAge:REFRESH_TOKEN_AGE_MS})
+       res.cookie("refreshToken", refreshToken, {maxAge:REFRESH_TOKEN_AGE_MS,sameSite:"none", httpOnly:true})
         return res.status(200).json({loggedUser})
     } catch (e) {
         console.log(e)
@@ -104,7 +104,7 @@ export const refresh = async (req: Request, res: Response) => {
             refreshToken:newRefreshToken,
         },{new:true})
 
-        res.cookie("refreshToken", newRefreshToken, {maxAge:REFRESH_TOKEN_AGE_MS})
+        res.cookie("refreshToken", newRefreshToken, {maxAge:REFRESH_TOKEN_AGE_MS, sameSite:"none", httpOnly:true})
         return res.status(200).json({loggedUser})
 
     } catch (e) {
