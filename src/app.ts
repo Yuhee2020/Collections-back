@@ -11,7 +11,7 @@ dotenv.config()
 
 const PORT=process.env.PORT
 const DB_URI=process.env.DB_URL
-const CLIENT_URL=process.env.CLIENT_URL || "http://localhost:3000" || "https://course-project-front-rouge.vercel.app"
+const CLIENT_URL=process.env.CLIENT_URL
 
 const app= express()
 app.use(express.json())

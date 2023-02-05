@@ -88,6 +88,7 @@ export const logOut = async (req: Request, res: Response) => {
 export const refresh = async (req: Request, res: Response) => {
     try {
         const {refreshToken}=req.cookies
+        console.log(refreshToken)
         if(!refreshToken){
             return res.status(401).json({error:"Unauthorized"})
         }
