@@ -11,10 +11,11 @@ export const getUsers = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUsers = async (req: Request, res: Response) => {
     try {
-        const {usersId} = req.body
-        usersId.map(async (userId:string)=>{
+        const usersId = req.body
+        console.log(usersId)
+        usersId.map(async (userId: string) => {
             await User.findByIdAndRemove(userId)
         })
         const users = await User.find()
@@ -26,9 +27,9 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 }
 
-export const blockUser = async (req: Request, res: Response) => {
+export const blockUsers = async (req: Request, res: Response) => {
     try {
-        const {usersId} = req.body
+        const usersId = req.body
         usersId.map(async (id: string) => {
             await User.findByIdAndUpdate({_id: id}, {isBlocked: true});
         })
@@ -40,9 +41,9 @@ export const blockUser = async (req: Request, res: Response) => {
     }
 }
 
-export const unlockUser = async (req: Request, res: Response) => {
+export const unlockUsers = async (req: Request, res: Response) => {
     try {
-        const {usersId} = req.body
+        const usersId = req.body
         usersId.map(async (id: string) => {
             await User.findByIdAndUpdate({_id: id}, {isBlocked: false});
         })
@@ -51,6 +52,23 @@ export const unlockUser = async (req: Request, res: Response) => {
     } catch (e) {
         console.log(e)
         res.status(400).json({message: "Unlock error"})
+    }
+}
+
+export const changeRole = async (req: Request, res: Response) => {
+    try {
+        const usersId = req.body
+        usersId.map(async (id: string) => {
+            const user = await User.findById({_id: id})
+            user?.role === "admin"
+                ? await User.findByIdAndUpdate({_id: id}, {role: "user"})
+                : await User.findByIdAndUpdate({_id: id}, {role: "admin"});
+        })
+        const users = await User.find()
+        res.status(200).json({message: 'Role changed', users})
+    } catch (e) {
+        console.log(e)
+        res.status(400).json({message: "Change role error"})
     }
 }
 
