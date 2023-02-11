@@ -9,8 +9,20 @@ export type UserType = {
     lastLoginDate: string
     accessToken: string;
     refreshToken: string;
-    reviewsCount:number;
+    collectionsCount:number;
     likes: number;
+    _id?:string
+}
+
+export type CollectionType = {
+    userId:string
+    theme:string
+    title: string;
+    description: string;
+    image?: string;
+    itemsCount:number
+    creationDate:Date
+    itemsFields: string[];
     _id?:string
 }
 

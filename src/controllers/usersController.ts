@@ -1,4 +1,4 @@
-import User from "../models/user-model";
+import User from "../models/userModel";
 import {Request, Response,} from "express"
 
 export const getUsers = async (req: Request, res: Response) => {

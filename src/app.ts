@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv"
 import {authRouter} from "./routes/authRouter";
 import {usersRouter} from "./routes/usersRouter";
+import {collectionsRouter} from "./routes/collectionsRouter";
 
 dotenv.config()
 
@@ -22,6 +23,7 @@ app.use(cors({
 app.use(cookieParser())
 app.use("/auth", authRouter)
 app.use("/users", usersRouter)
+app.use("/collections", collectionsRouter)
 
 
 mongoose.set('strictQuery', false)

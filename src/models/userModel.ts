@@ -13,7 +13,7 @@ const UserSchema=new Schema<UserType>({
     lastLoginDate:{type:String, required:true},
     accessToken: {type: String},
     refreshToken: {type: String},
-    reviewsCount: {type: Number, required: true},
+    collectionsCount: {type: Number, required: true},
     likes: {type: Number, required: true},
 })
 

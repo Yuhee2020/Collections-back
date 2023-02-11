@@ -1,5 +1,5 @@
 import {Request, Response,} from "express"
-import User from "../models/user-model";
+import User from "../models/userModel";
 import {validationResult} from "express-validator";
 import bcrypt from 'bcrypt'
 import dayjs from "dayjs";
@@ -32,7 +32,7 @@ export const registration = async (req: Request, res: Response) => {
             role: "user",
             accessToken: "",
             refreshToken: "",
-            reviewsCount: 0,
+            collectionsCount: 0,
             likes: 0,
         })
         await user.save()
@@ -112,19 +112,4 @@ export const refresh = async (req: Request, res: Response) => {
         res.status(400).json({message: "authorization error"})
     }
 }
-
-
-// export const authMe = async (req: Request, res: Response) => {
-//     try {
-//         const user = await User.findById(req.body.user.id)
-//         const token = jwt.sign({id: user?._id}, secret, {expiresIn: "1h"})
-//         const email = user?.email
-//         const id = user?._id
-//         const isBocked = user?.isBlocked
-//         return res.json({token, email, id, isBocked})
-//     } catch (e) {
-//         console.log(e)
-//         return res.status(400).json({message: "Auth error"})
-//     }
-// }
 
