@@ -2,10 +2,11 @@ import {Router} from "express";
 import {authMiddleware} from "../middleware/authMiddleware";
 import {
     createCollection,
-    deleteCollection,
-    editCollection, getCollection,
+    deleteCollection, editCollection,
+    getCollection,
     getUserCollections
-} from "../controllers/collectionController";
+} from "../controllers/collectionsController";
+
 
 
 export const collectionsRouter=Router();

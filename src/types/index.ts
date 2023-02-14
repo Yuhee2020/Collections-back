@@ -26,3 +26,32 @@ export type CollectionType = {
     _id?:string
 }
 
+export type ItemType={
+    collectionId:string
+    userId:string
+    title:string
+    likesCount:number
+    usersIdWhoLiked:string[]
+    tags:string[]
+    image:string
+    itemCreationDate:Date
+    productionDate:string,
+    dateOfCreation:string,
+    dateOfWriting:string,
+    author:  string,
+    producer:  string,
+    countryOfOrigin:  string,
+    price:  number,
+    weight:  number,
+    numberOfCopies:  number,
+    description:  string,
+    historyOfCreation:  string,
+    uniqueCharacteristics:string
+    isUniqueItem:boolean,
+    isAvailableForSale:boolean,
+    isAvailableForExchange:boolean,
+}
+
+export  type TagType={
+    title:string
+}

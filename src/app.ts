@@ -6,6 +6,10 @@ import dotenv from "dotenv"
 import {authRouter} from "./routes/authRouter";
 import {usersRouter} from "./routes/usersRouter";
 import {collectionsRouter} from "./routes/collectionsRouter";
+import {authMiddleware} from "./middleware/authMiddleware";
+import {itemsRouter} from "./routes/itemsRouter";
+import {tagsRouter} from "./routes/tagsRouter";
+
 
 dotenv.config()
 
@@ -22,8 +26,10 @@ app.use(cors({
 }))
 app.use(cookieParser())
 app.use("/auth", authRouter)
-app.use("/users", usersRouter)
+app.use("/users", authMiddleware, usersRouter)
 app.use("/collections", collectionsRouter)
+app.use("/items", itemsRouter)
+app.use("/tags", tagsRouter)
 
 
 mongoose.set('strictQuery', false)
