@@ -1,14 +1,14 @@
 import {Request, Response} from "express";
 import Tag from "../models/tagModel";
-import {TagType} from "../types";
+
 
 export const createTags = async (req: Request, res: Response) => {
     try {
         const tags = req.body
-        tags.map(async (tag:TagType)=>{
+        for (const tag of tags) {
             const newTag=new Tag(tag)
             await newTag.save()
-        })
+        }
         const allTags=await Tag.find()
         return res.status(201).json({message: "tags created",allTags})
     } catch (e) {

@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import Item from "../models/itemModel";
-import User from "../models/userModel";
+
 
 export const createItem = async (req: Request, res: Response) => {
     try {
@@ -34,11 +34,11 @@ export const getCollectionItems = async (req: Request, res: Response) => {
 export const deleteItems = async (req: Request, res: Response) => {
     try {
         const {itemsId, collectionId} = req.body
-        await itemsId.map(async (itemId: string) => {
-            await Item.findByIdAndDelete(itemId)
-        })
+        for (const itemId of itemsId) {
+           await Item.findByIdAndDelete(itemId)
+        }
         const collectionItems = await Item.find({collectionId})
-        return res.status(200).json({message: "items deleted", collectionItems})
+        return res.status(202).json({message: "items deleted", collectionItems})
     } catch (e) {
         console.log(e)
         res.status(400).json({message: "Delete item error"})

@@ -30,7 +30,7 @@ export const deleteUsers = async (req: Request, res: Response) => {
 export const blockUsers = async (req: Request, res: Response) => {
     try {
         const usersId = req.body
-        usersId.map(async (id: string) => {
+        await usersId.map(async (id: string) => {
             await User.findByIdAndUpdate({_id: id}, {isBlocked: true});
         })
         const users = await User.find()
