@@ -2,6 +2,7 @@ import {model, Schema} from "mongoose";
 import {ItemType} from "../types";
 
 
+
 const ItemSchema = new Schema<ItemType>({
     collectionId: {type: String, required: true},
     userId: {type: String, required: true},
@@ -11,9 +12,9 @@ const ItemSchema = new Schema<ItemType>({
     tags:[{type:String}],
     itemCreationDate:{type:Date},
     image: {type: String},
-    productionDate:{type:String},
-    dateOfCreation:{type:String},
-    dateOfWriting:{type:String},
+    productionDate:{type:Date},
+    dateOfCreation:{type:Date},
+    dateOfWriting:{type:Date},
     author: {type: String},
     producer: {type: String},
     countryOfOrigin: {type: String},
