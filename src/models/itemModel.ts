@@ -28,6 +28,17 @@ const ItemSchema = new Schema<ItemType>({
     isAvailableForSale:{type:Boolean},
     isAvailableForExchange:{type:Boolean},
 })
+ItemSchema.index(
+    {
+        title : 'text',
+        author: 'text',
+        tags: 'text',
+        producer: 'text',
+        countryOfOrigin: 'text',
+        description: 'text',
+        historyOfCreation: 'text',
+        uniqueCharacteristics: 'text',
+    });
 
 
 export default model<ItemType>("Item", ItemSchema)
