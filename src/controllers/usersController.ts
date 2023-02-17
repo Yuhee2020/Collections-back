@@ -1,5 +1,6 @@
 import User from "../models/userModel";
 import {Request, Response,} from "express"
+import Collection from "../models/collectionModel";
 
 export const getUsers = async (req: Request, res: Response) => {
     try {
@@ -14,11 +15,15 @@ export const getUsers = async (req: Request, res: Response) => {
 export const deleteUsers = async (req: Request, res: Response) => {
     try {
         const usersId = req.body
-        console.log(usersId)
-        usersId.map(async (userId: string) => {
+        await usersId.map(async (userId: string) => {
             await User.findByIdAndRemove(userId)
         })
+        await usersId.map(async (userId:string)=>{
+            await Collection.deleteMany({userId})
+        })
+
         const users = await User.find()
+
         res.status(202).json({message: `Deleted successfully`, users})
 
     } catch (e) {
@@ -44,7 +49,7 @@ export const blockUsers = async (req: Request, res: Response) => {
 export const unlockUsers = async (req: Request, res: Response) => {
     try {
         const usersId = req.body
-        usersId.map(async (id: string) => {
+        await usersId.map(async (id: string) => {
             await User.findByIdAndUpdate({_id: id}, {isBlocked: false});
         })
         const users = await User.find()
@@ -58,7 +63,7 @@ export const unlockUsers = async (req: Request, res: Response) => {
 export const changeRole = async (req: Request, res: Response) => {
     try {
         const usersId = req.body
-        usersId.map(async (id: string) => {
+        await usersId.map(async (id: string) => {
             const user = await User.findById({_id: id})
             user?.role === "admin"
                 ? await User.findByIdAndUpdate({_id: id}, {role: "user"})

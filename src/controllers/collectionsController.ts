@@ -7,7 +7,8 @@ export const createCollection = async (req: Request, res: Response) => {
         const collection = req.body
         const newCollection = new Collection({
             ...collection,
-            creationDate: Date.now()
+            creationDate: Date.now(),
+            itemsCount:0
         })
         await newCollection.save()
         return res.status(201).json({message: "Collection successfully created",})

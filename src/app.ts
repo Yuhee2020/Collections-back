@@ -9,6 +9,7 @@ import {collectionsRouter} from "./routes/collectionsRouter";
 import {authMiddleware} from "./middleware/authMiddleware";
 import {itemsRouter} from "./routes/itemsRouter";
 import {tagsRouter} from "./routes/tagsRouter";
+import {commentsRouter} from "./routes/commentsRouter";
 
 
 dotenv.config()
@@ -30,6 +31,7 @@ app.use("/users", authMiddleware, usersRouter)
 app.use("/collections", collectionsRouter)
 app.use("/items", itemsRouter)
 app.use("/tags", tagsRouter)
+app.use("/comments", commentsRouter)
 
 
 

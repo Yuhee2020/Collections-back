@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import Item from "../models/itemModel";
+import Collection from "../models/collectionModel";
 
 
 export const createItem = async (req: Request, res: Response) => {
@@ -9,9 +10,16 @@ export const createItem = async (req: Request, res: Response) => {
             ...item,
             itemCreationDate: Date.now(),
             likesCount: 0,
+            commentsCount:0,
         })
         await newItem.save()
         const collectionId = item.collectionId
+        const collection= await Collection.findById({_id: collectionId})
+        console.log(collection)
+        if(collection) {
+            await Collection.findByIdAndUpdate
+            ({collectionId}, {itemsCount:collection.itemsCount + 1},{new:true})
+        }
         const items = await Item.find({collectionId})
         return res.status(201).json({message: "Item successfully created", items})
     } catch (e) {
@@ -33,9 +41,21 @@ export const getCollectionItems = async (req: Request, res: Response) => {
 
 export const getLastItems = async (req: Request, res: Response) => {
     try {
-        const allItems = await Item.find()
-        const items = allItems.reverse()
-        return res.status(200).json({message: "success", items})
+        const {text} = req.query
+        if (text) {
+            const textF: string = text as string | undefined || "";
+            const reg = new RegExp(textF, 'gi')
+            const items = await Item
+                .find({
+                    $or: [{description: reg}, {title: reg}, {author: reg}, {producer: reg},
+                        {historyOfCreation: reg}, {countryOfOrigin: reg}, {uniqueCharacteristics: reg}, {tags: reg}]
+                })
+            return res.status(200).json({message: "success", items})
+        } else {
+            const allItems = await Item.find()
+            const items = allItems.reverse()
+            return res.status(200).json({message: "success", items})
+        }
     } catch (e) {
         console.log(e)
         res.status(400).json({message: "Get items error"})
@@ -85,7 +105,7 @@ export const findItems = async (req: Request, res: Response) => {
         const textF: string = text as string | undefined || "";
         const reg = new RegExp(textF, 'gi')
         const items = await Item
-            .find({$or: [{description: reg}, {author: reg}, {producer: reg},{historyOfCreation: reg},{tags: reg}]})
+            .find({$or: [{description: reg}, {author: reg}, {producer: reg}, {historyOfCreation: reg}, {tags: reg}]})
         return res.status(200).json({message: "success", items})
     } catch (e) {
         console.log(e)

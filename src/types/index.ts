@@ -30,9 +30,11 @@ export type CollectionType = {
 
 export type ItemType={
     collectionId:string
+    collectionName:string
     userId:string
     title:string
     likesCount:number
+    commentsCount:number
     usersIdWhoLiked:string[]
     tags:string[]
     image:string
@@ -56,4 +58,12 @@ export type ItemType={
 
 export  type TagType={
     title:string
+}
+
+export  type CommentType={
+    itemId: string,
+    text:string,
+    userId: string,
+    userName:string,
+    creationDate:Date,
 }

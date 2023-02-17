@@ -14,8 +14,8 @@ import {
 export const itemsRouter=Router();
 
 itemsRouter.post('/createItem',authMiddleware, createItem)
-itemsRouter.get('/getCollectionItems/:collectionId',authMiddleware, getCollectionItems)
-itemsRouter.get('/getItem/:itemId',authMiddleware, getItem)
+itemsRouter.get('/getCollectionItems/:collectionId',getCollectionItems)
+itemsRouter.get('/getItem/:itemId',getItem)
 itemsRouter.get('/getLastItems/', getLastItems)
 itemsRouter.get('/findItems/', findItems)
 itemsRouter.put('/deleteItems',authMiddleware, deleteItems)

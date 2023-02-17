@@ -5,9 +5,11 @@ import {ItemType} from "../types";
 
 const ItemSchema = new Schema<ItemType>({
     collectionId: {type: String, required: true},
+    collectionName:{type: String, required: true},
     userId: {type: String, required: true},
     title: {type: String, required:true},
     likesCount: {type: Number},
+    commentsCount: {type: Number},
     usersIdWhoLiked:[{type:String}],
     tags:[{type:String}],
     itemCreationDate:{type:Date},
@@ -28,17 +30,6 @@ const ItemSchema = new Schema<ItemType>({
     isAvailableForSale:{type:Boolean},
     isAvailableForExchange:{type:Boolean},
 })
-ItemSchema.index(
-    {
-        title : 'text',
-        author: 'text',
-        tags: 'text',
-        producer: 'text',
-        countryOfOrigin: 'text',
-        description: 'text',
-        historyOfCreation: 'text',
-        uniqueCharacteristics: 'text',
-    });
 
 
 export default model<ItemType>("Item", ItemSchema)
