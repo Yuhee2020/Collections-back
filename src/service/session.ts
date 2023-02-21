@@ -7,7 +7,6 @@ dotenv.config()
 
 export const getGoogleOauthToken = async ({code}: {code: string}): Promise<GoogleOauthToken> => {
     const rootURl = 'https://oauth2.googleapis.com/token';
-
     const options = {
         code,
         client_id: process.env.GOOGLE_OAUTH_CLIENT_ID,
