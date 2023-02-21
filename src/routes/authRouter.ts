@@ -1,5 +1,11 @@
 import {Router} from "express";
-import {login, logOut, refresh, registration} from "../controllers/authController";
+import {
+    googleOauthHandler,
+    login,
+    logOut,
+    refresh,
+    registration
+} from "../controllers/authController";
 import {check} from "express-validator";
 
 
@@ -12,5 +18,6 @@ authRouter.post('/registration',[
 authRouter.post('/login',login)
 authRouter.post('/refresh', refresh)
 authRouter.post('/logout',logOut)
+authRouter.get('/google', googleOauthHandler);
 
 

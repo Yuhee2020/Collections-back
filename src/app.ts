@@ -11,9 +11,7 @@ import {itemsRouter} from "./routes/itemsRouter";
 import {tagsRouter} from "./routes/tagsRouter";
 import {commentsRouter} from "./routes/commentsRouter";
 
-
 dotenv.config()
-
 
 const PORT=process.env.PORT
 const DB_URI=process.env.DB_URL

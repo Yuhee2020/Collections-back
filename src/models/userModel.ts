@@ -14,7 +14,9 @@ const UserSchema=new Schema<UserType>({
     accessToken: {type: String},
     refreshToken: {type: String},
     collectionsCount: {type: Number, required: true},
-    likes: {type: Number, required: true},
+    likes: {type: Number,},
+    provider: {type: String},
+    verified: {type: Boolean},
 })
 
 export default model<UserType>("User", UserSchema)

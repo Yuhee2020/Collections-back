@@ -3,8 +3,7 @@ import {authMiddleware} from "../middleware/authMiddleware";
 import {
     createCollection,
     deleteCollection, editCollection,
-    getCollection,
-    getUserCollections
+    getCollection, getCollections,
 } from "../controllers/collectionsController";
 
 
@@ -12,7 +11,7 @@ import {
 export const collectionsRouter=Router();
 
 collectionsRouter.post('/createCollection',authMiddleware, createCollection)
-collectionsRouter.get('/getUserCollections/:userId',authMiddleware, getUserCollections)
-collectionsRouter.get('/getCollection/:collectionId',authMiddleware, getCollection)
+collectionsRouter.get('/getCollections', getCollections)
+collectionsRouter.get('/getCollection/:collectionId', getCollection)
 collectionsRouter.delete('/deleteCollection/:collectionId',authMiddleware, deleteCollection)
 collectionsRouter.put('/editCollection/',authMiddleware, editCollection)
