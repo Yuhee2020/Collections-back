@@ -4,7 +4,7 @@ import {UserType} from "../types";
 
 const UserSchema=new Schema<UserType>({
     email: {type:String, required:true, unique:true},
-    password:{type:String, required:true},
+    password:{type:String},
     userName: {type: String},
     avatar: {type: String},
     role: { type: String,required: true },
