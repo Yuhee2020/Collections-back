@@ -24,6 +24,7 @@ app.use(cors({
     origin: true,
 }))
 app.use(cookieParser())
+
 app.use("/auth", authRouter)
 app.use("/users", authMiddleware, usersRouter)
 app.use("/collections", collectionsRouter)
