@@ -10,7 +10,12 @@ import {
 } from "../service/token-service";
 import {REFRESH_TOKEN_AGE_MS} from "../constants";
 import jwt from "jsonwebtoken";
-import {getGoogleOauthToken, getGoogleUser} from "../service/session";
+import {
+    getGithubOathToken,
+    getGithubUser,
+    getGoogleOauthToken,
+    getGoogleUser
+} from "../service/session";
 import dotenv from "dotenv";
 
 dotenv.config()
@@ -141,7 +146,6 @@ export const googleOauthHandler = async (req: Request, res: Response,) => {
     try {
         const code = req.query.code as string;
         const pathUrl = (req.query.state as string) || '/';
-        console.log(pathUrl)
         if (!code) {
             return res.status(401).json({message: "Authorization code not provided!"})
         }
@@ -199,7 +203,7 @@ export const googleOauthHandler = async (req: Request, res: Response,) => {
                 email,
                 lastLoginDate: dayjs().format("DD-MMM-YYYY HH:mm:ss"),
                 isBlocked: false,
-                userName: email,
+                userName: name,
                 accessToken,
                 refreshToken,
             },
@@ -216,3 +220,85 @@ export const googleOauthHandler = async (req: Request, res: Response,) => {
         return res.redirect(`${clientAuthUrl}/error`);
     }
 };
+
+export const githubOauthHandler = async (req: Request, res: Response,) => {
+    try {
+
+        const code = req.query.code as string;
+        console.log(code)
+        const pathUrl = (req.query.state as string) ?? '/';
+        if (req.query.error) {
+            return res.redirect(`${process.env.CLIENT_URL}/login`);
+        }
+
+        if (!code) {
+             return res.status(401).json({message: "Authorization code not provided!"})
+        }
+
+        const { access_token } = await getGithubOathToken({ code });
+
+        const { email,login } = await getGithubUser({ access_token });
+
+        const user = await User.findOne({email})
+        if (!user) {
+            const user = new User({
+                email,
+                userName: login,
+                registrationDate: dayjs().format("DD-MMM-YYYY HH:mm:ss"),
+                lastLoginDate: "no login attempts",
+                isBlocked: false,
+                avatar: "",
+                role: "user",
+                accessToken: "",
+                refreshToken: "",
+                collectionsCount: 0,
+                likes: 0,
+                provider: 'Google',
+                verified: true
+            })
+            const newUser = await user.save()
+            const accessToken = generateAccessToken(newUser._id)
+            const refreshToken = generateRefreshToken(newUser._id)
+            await User.findOneAndUpdate(
+                {email},
+                {
+                    lastLoginDate: dayjs().format("DD-MMM-YYYY HH:mm:ss"),
+                    accessToken,
+                    refreshToken,
+                }
+            );
+            res.cookie("refreshToken", refreshToken,
+                {
+                    maxAge: REFRESH_TOKEN_AGE_MS,
+                    sameSite: "none",
+                    secure: true,
+                    httpOnly: true
+                })
+            return res.redirect(`${clientAuthUrl}`);
+        }
+        const accessToken = generateAccessToken(user._id)
+        const refreshToken = generateRefreshToken(user._id)
+        await User.findOneAndUpdate(
+            {email},
+            {
+                email,
+                lastLoginDate: dayjs().format("DD-MMM-YYYY HH:mm:ss"),
+                userName: login,
+                accessToken,
+                refreshToken,
+            },
+        );
+        res.cookie("refreshToken", refreshToken, {
+            maxAge: REFRESH_TOKEN_AGE_MS,
+            sameSite: "none",
+            secure: true,
+            httpOnly: true
+        })
+        return res.redirect(`${clientAuthUrl}`);
+
+    } catch (err: any) {
+        console.log('Failed to authorize Google User', err);
+        return res.redirect(`${clientAuthUrl}/error`);
+    }
+};
+

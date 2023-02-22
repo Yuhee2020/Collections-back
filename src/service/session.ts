@@ -1,11 +1,11 @@
 import axios from 'axios';
 import qs from 'qs';
 import dotenv from "dotenv";
-import {GoogleOauthToken, GoogleUserResult} from "../types";
+import {GitHubOauthToken, GitHubUser, GoogleOauthToken, GoogleUserResult} from "../types";
 
 dotenv.config()
 
-export const getGoogleOauthToken = async ({code}: {code: string}): Promise<GoogleOauthToken> => {
+export const getGoogleOauthToken = async ({code}: { code: string }): Promise<GoogleOauthToken> => {
     const rootURl = 'https://oauth2.googleapis.com/token';
     const options = {
         code,
@@ -15,7 +15,7 @@ export const getGoogleOauthToken = async ({code}: {code: string}): Promise<Googl
         grant_type: 'authorization_code',
     };
     try {
-        const { data } = await axios.post<GoogleOauthToken>(
+        const {data} = await axios.post<GoogleOauthToken>(
             rootURl,
             qs.stringify(options),
             {
@@ -33,11 +33,11 @@ export const getGoogleOauthToken = async ({code}: {code: string}): Promise<Googl
 };
 
 
-
-export async function getGoogleUser({id_token, access_token,}: { id_token: string; access_token: string;
+export async function getGoogleUser({id_token, access_token,}: {
+    id_token: string; access_token: string;
 }): Promise<GoogleUserResult> {
     try {
-        const { data } = await axios.get<GoogleUserResult>(
+        const {data} = await axios.get<GoogleUserResult>(
             `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
             {
                 headers: {
@@ -52,3 +52,41 @@ export async function getGoogleUser({id_token, access_token,}: { id_token: strin
         throw Error(err);
     }
 }
+
+
+
+export const getGithubOathToken = async ({code,}: {
+    code: string;
+}): Promise<GitHubOauthToken> => {
+    const rootUrl = 'https://github.com/login/oauth/access_token';
+    const options = {
+        client_id: process.env.GITHUB_OAUTH_CLIENT_ID,
+        client_secret: process.env.GITHUB_OAUTH_CLIENT_SECRET,
+        code,
+    };
+    const queryString = qs.stringify(options);
+    try {
+        const {data} = await axios.post(`${rootUrl}?${queryString}`, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        });
+        const decoded = qs.parse(data) as GitHubOauthToken;
+        return decoded;
+    } catch (err: any) {
+        throw Error(err);
+    }
+};
+
+export const getGithubUser = async ({access_token,}: {
+    access_token: string;
+}): Promise<GitHubUser> => {
+    try {
+        const {data} = await axios.get<GitHubUser>(
+            'https://api.github.com/user',
+            {headers: {Authorization: `Bearer ${access_token}`,},});
+        return data;
+    } catch (err: any) {
+        throw Error(err);
+    }
+};

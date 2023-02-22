@@ -1,5 +1,6 @@
 import {Router} from "express";
 import {
+    githubOauthHandler,
     googleOauthHandler,
     login,
     logOut,
@@ -18,6 +19,7 @@ authRouter.post('/registration',[
 authRouter.post('/login',login)
 authRouter.post('/refresh', refresh)
 authRouter.post('/logout',logOut)
-authRouter.get('/google', googleOauthHandler);
+authRouter.get('/google', googleOauthHandler)
+authRouter.get('/github', githubOauthHandler);
 
 
