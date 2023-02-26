@@ -60,7 +60,10 @@ export const getItems = async (req: Request, res: Response) => {
                 const item =await Item.findById(commentItemsId)
                 commentsItems.push(item)
             }
-            const items = Array.from(new Set([...itemsFromItem,...commentsItems]))
+
+            const items = [...itemsFromItem,...commentsItems].filter((item, index, obj) =>
+                obj.indexOf(item) && obj.lastIndexOf(item)
+            );
             return res.status(200).json({message: "success", items})
         } else {
             const allItems = await Item.find()
