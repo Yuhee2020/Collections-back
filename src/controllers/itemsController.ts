@@ -17,9 +17,10 @@ export const createItem = async (req: Request, res: Response) => {
         await newItem.save()
         const collectionId = item.collectionId
         const collection= await Collection.findById({_id: collectionId})
+        console.log(collection)
         if(collection) {
             await Collection.findByIdAndUpdate
-            ({collectionId}, {itemsCount:collection.itemsCount + 1},{new:true})
+            (collectionId, {itemsCount:collection.itemsCount + 1},{new:true})
         }
         const items = await Item.find({collectionId})
         return res.status(201).json({message: "Item successfully created", items})

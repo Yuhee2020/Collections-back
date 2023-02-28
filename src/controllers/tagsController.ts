@@ -5,6 +5,7 @@ import Tag from "../models/tagModel";
 export const createTags = async (req: Request, res: Response) => {
     try {
         const tags = req.body
+        console.log(tags)
         for (const tag of tags) {
             const newTag=new Tag(tag)
             await newTag.save()
