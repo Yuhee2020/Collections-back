@@ -16,7 +16,6 @@ dotenv.config()
 const PORT=process.env.PORT
 const DB_URI=process.env.DB_URL
 
-
 const app= express()
 app.use(express.json())
 app.use(cors({
